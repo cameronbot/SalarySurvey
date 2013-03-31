@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  city: MyString
+  zip: 1
+  initial_offer: 9.99
+  negotiated_offer: 9.99
+  signing_bonus: 9.99
+  months_since_last_round: 1
+  years_experience: 1
+  equity: 
+
+two:
+  city: MyString
+  zip: 1
+  initial_offer: 9.99
+  negotiated_offer: 9.99
+  signing_bonus: 9.99
+  months_since_last_round: 1
+  years_experience: 1
+  equity: 

@@ -1,0 +1,81 @@
+%a.btn{href:new_offer_path} Submit an Offer
+
+:css
+  path {
+    fill: none;
+    stroke-linejoin: round;
+  }
+
+  .land {
+    fill: #ddd;
+  }
+
+  .states,
+  .hexagons path {
+    stroke: #fff;
+  }
+
+:javascript
+  var width = 960,
+      height = 500,
+      parseDate = d3.time.format("%x").parse;
+
+  var color = d3.scale.linear()
+          .domain([40000,120000])
+          .range(["lightblue", "midnightblue"])
+          .interpolate(d3.interpolateLab);
+
+  var hexbin = d3.hexbin()
+      .size([width, height])
+      .radius(8);
+
+  var radius = d3.scale.sqrt()
+      .domain([0, 12])
+      .range([0, 8]);
+
+  var projection = d3.geo.albers()
+      .scale(1000)
+      .translate([width / 2, height / 2])
+      .precision(.1);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  queue()
+      .defer(d3.json, "#{asset_path "us.json"}")
+      .defer(d3.json, "#{coords_offers_path}")
+      .await(ready);
+
+  function ready(error, us, salaries) {
+    salaries.forEach(function(d) {
+      var p = projection([d.lng, d.lat]);
+      d[0] = p[0], d[1] = p[1];
+      d.salary = d.negotiated_offer;
+    });
+
+    svg.append("path")
+        .datum(topojson.object(us, us.objects.land))
+        .attr("class", "land")
+        .attr("d", path);
+
+    svg.append("path")
+        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+        .attr("class", "states")
+        .attr("d", path);
+
+    svg.append("g")
+        .attr("class", "hexagons")
+      .selectAll("path")
+        .data(hexbin(salaries).sort(function(a, b) { return b.length - a.length; }))
+      .enter().append("path")
+        .attr("d", function(d) { return hexbin.hexagon(radius(d.length*4)); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .style("fill", function(d) { return color(d3.median(d, function(d) { return d.salary; })); });
+  }
+
+= render "table"
+

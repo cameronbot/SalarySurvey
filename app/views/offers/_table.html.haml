@@ -1,0 +1,18 @@
+%table.table.table-hover
+  %thead
+    %tr
+      %th Location
+      %th Avg. Initial Offer
+      %th Avg. Negotiated Offer
+      %th N
+  %tbody
+    - @location_data.each do |d|
+      %tr
+        %td
+          = d.city
+        %td
+          = number_to_currency(d.init, :precision => 0)
+        %td
+          = number_to_currency(d.final, :precision => 0)
+        %td
+          = d.total

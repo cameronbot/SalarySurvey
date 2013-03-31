@@ -1,0 +1,60 @@
+= form_for @offer, url: offers_path, html: { class: "span9" } do |f|
+  .help-block All fields are optional. Please only share what you are comfortable revealing. We're not collecting any personally identifiable information, but obviously we're dealing with a very small sample size right now.
+  %fieldset
+    %legend The cold, hard numbers
+    .controls-row
+      .span3
+        = f.label :initial_offer
+        .input-prepend
+          %span.add-on $
+          = f.text_field :initial_offer, placeholder: "45000", class: "input-small",
+            :"data-toggle" => "popover", :"data-placement" => "right",
+            :"data-trigger" => "focus", :"data-animation" => "true",
+            :"data-title" => "Initial offer",
+            :"data-content" => "Did you get lowballed? What was the company's initial offer to you?"
+      .span3
+        = f.label :negotiated_offer
+        .input-prepend
+          %span.add-on $
+          = f.text_field :negotiated_offer, placeholder: "60000", class: "input-small",
+            :"data-toggle" => "popover", :"data-placement" => "right",
+            :"data-trigger" => "focus", :"data-animation" => "true",
+            :"data-title" => "Negotation pays off",
+            :"data-content" => "You asked for $5k more didn't you? What was the finally salary you negotiated?"
+      .span2
+        = f.label :signing_bonus
+        .input-prepend
+          %span.add-on $
+          = f.text_field :signing_bonus, placeholder: "5000", class: "input-small",
+            :"data-toggle" => "popover", :"data-placement" => "right",
+            :"data-trigger" => "focus", :"data-animation" => "true",
+            :"data-title" => "Signing bonus",
+            :"data-content" => "Congratulations if you received a signing bonus. We'd love to know what you got!"
+  %fieldset
+    %legend Company Location
+    .span8
+      = f.label :city, "City"
+      = f.text_field :city, placeholder: "Seattle, WA",
+        :"data-toggle" => "popover", :"data-placement" => "right",
+        :"data-trigger" => "focus", :"data-animation" => "true",
+        :"data-title" => "Location",
+        :"data-content" => "We'll plot this on a map, don't give the full address. City name is enough."
+  / %fieldset
+  /   %legend Curious stats
+  /   .help-block If you can share any of the following info, maybe we can find some juicy patterns in our data.
+  /   = f.label :months_since_last_round, "Months since your company last raised venture capital"
+  /   = f.text_field :months_since_last_round, class: "input-small",
+  /     :"data-toggle" => "popover", :"data-placement" => "right",
+  /     :"data-trigger" => "focus", :"data-animation" => "true",
+  /     :"data-title" => "Last round of VC",
+  /     :"data-content" => "If your company is public, please leave blank."
+  /   %label.checkbox{ for: "equity" }
+  /     Check this if you will receive stock options as part of your compensation.
+  /     = f.check_box :equity, { id: "equity" }, "true", "false"
+  %fieldset
+    %legend Notes
+    .span8
+      .help-block Anything else you want to share? Any other info you think we should consider surveying?
+      = f.text_area :notes, { rows: 3, class: "span6" }
+      %label
+      = f.submit "Submit", class: "btn"
